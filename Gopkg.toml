@@ -24,35 +24,35 @@
 #   go-tests = true
 #   unused-packages = true
 
-required = ["github.com/sung1011/tk-log"]
+# required = ["github.com/sung1011/tk-log"]
 
-[[constraint]]
-  name = "github.com/sung1011/tk-log"
-  source = "github.com/sung1011/tk-log"
+# [[constraint]]
+#   name = "github.com/sung1011/tk-log"
+#   source = "github.com/sung1011/tk-log"
 
-[[constraint]]
-  name = "github.com/fatih/color"
-  version = "1.7.0"
+# [[constraint]]
+#   name = "github.com/fatih/color"
+#   version = "1.7.0"
 
-[[constraint]]
-  branch = "master"
-  name = "github.com/mitchellh/go-homedir"
+# [[constraint]]
+#   branch = "master"
+#   name = "github.com/mitchellh/go-homedir"
 
-[[constraint]]
-  name = "github.com/spf13/cobra"
-  version = "0.0.3"
+# [[constraint]]
+#   name = "github.com/spf13/cobra"
+#   version = "0.0.3"
 
-[[constraint]]
-  name = "github.com/spf13/viper"
-  version = "1.0.2"
+# [[constraint]]
+#   name = "github.com/spf13/viper"
+#   version = "1.0.2"
 
-[[constraint]]
-  name = "github.com/tidwall/gjson"
-  version = "1.1.2"
+# [[constraint]]
+#   name = "github.com/tidwall/gjson"
+#   version = "1.1.2"
 
-[[constraint]]
-  branch = "master"
-  name = "golang.org/x/crypto"
+# [[constraint]]
+#   branch = "master"
+#   name = "golang.org/x/crypto"
 
 [prune]
   go-tests = true
