@@ -16,10 +16,8 @@ var towerCmd = &cobra.Command{
 	Use:   "tower",
 	Short: "我的tower",
 	Long:  `tower`,
-	Example: fmt.Sprintf("%s\n%s\n%s\n",
+	Example: fmt.Sprintf("%s\n",
 		"tk tower me",
-		"tk tower 十八寨",
-		"tk tower 十八寨 回雁峰 黑龙潭",
 	),
 	Run: func(cmd *cobra.Command, args []string) {
 		route(args)

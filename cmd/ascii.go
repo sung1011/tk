@@ -16,11 +16,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"reflect"
 	"strings"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var col [128]doc
@@ -73,7 +73,13 @@ func list() {
 	fmt.Println("---------------------------------")
 	allRet := ""
 	indexRet := ""
-	index := viper.GetString("asciiIndex")
+	var index string
+	if len(os.Args) > 2 {
+		index = os.Args[2]
+	} else {
+		index = ""
+	}
+	// index := viper.GetString("asciiIndex")
 	for _, doc := range col {
 		s := fmt.Sprintf("|%8s|%6d|%8s|%6s|\n", doc.bin, doc.dec, doc.hex, doc.char)
 		if strings.Contains(s, index) {
@@ -91,6 +97,6 @@ func list() {
 func init() {
 	rootCmd.AddCommand(asciiCmd)
 
-	asciiCmd.Flags().StringP("index", "i", "", "匹配")
-	viper.BindPFlag("asciiIndex", asciiCmd.Flags().Lookup("index"))
+	// asciiCmd.Flags().StringP("index", "i", "", "匹配")
+	// viper.BindPFlag("asciiIndex", asciiCmd.Flags().Lookup("index"))
 }
