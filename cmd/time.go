@@ -39,9 +39,9 @@ var timeCmd = &cobra.Command{
 			// 字符串
 			cb = cb.Parse(value, tz)
 		}
-		log.Succ(fmt.Sprintf("时区: %s", tz))
-		log.Succ(fmt.Sprintf("字符: %s", cb.ToDateTimeString()))
-		log.Succ(fmt.Sprintf("时间戳: %d", cb.Carbon2Time().Unix()))
+		log.Succ(fmt.Sprintf(" %s", tz))
+		log.Succ(fmt.Sprintf(" %s", cb.ToDateTimeString()))
+		log.Succ(fmt.Sprintf(" %d", cb.Carbon2Time().Unix()))
 	},
 }
 

@@ -1,0 +1,14 @@
+ssh_host:
+    dev: ""
+
+ssh_username:
+    dev: ""
+
+ssh_password:
+    dev: ""
+
+multi:
+    test:
+        - open http://www.google.com
+        - open http://www.baidu.com
+    avs:

@@ -5,7 +5,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/sung1011/tk/common"
+	"github.com/sung1011/tk/utils"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -31,7 +31,7 @@ func Execute() {
 			path, errExec := exec.LookPath(os.Args[1])
 			if errExec == nil {
 				cmd := exec.Command(path)
-				common.RunCmd(cmd)
+				utils.RunCmd(cmd)
 			}
 		}
 
@@ -46,6 +46,8 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
+const CONFIG_FILE_DEFAULT = ".tk.yaml"
+
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
@@ -56,14 +58,25 @@ func initConfig() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-
+		pathExists, err := utils.PathExists(fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
+		if err != nil {
+			panic(err)
+		}
+		if !pathExists {
+			curPath, err := os.Getwd()
+			if err != nil {
+				panic(err)
+			}
+			utils.CopyFile(fmt.Sprintf("%s/%s.default", curPath, CONFIG_FILE_DEFAULT), fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
+		}
 		viper.AddConfigPath(home)
 		viper.SetConfigName(".tk")
 	}
 
 	viper.AutomaticEnv()
 
-	if err := viper.ReadInConfig(); err == nil {
+	if err := viper.ReadInConfig(); err != nil {
 		// fmt.Println("Using config file:", viper.ConfigFileUsed())
+		panic(err)
 	}
 }

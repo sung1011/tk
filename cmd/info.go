@@ -16,6 +16,7 @@ package cmd
 
 import (
 	"fmt"
+	"go/build"
 	"os"
 	"os/exec"
 	"reflect"
@@ -40,7 +41,7 @@ func init() {
 	rootCmd.AddCommand(infoCmd)
 }
 
-//RuntimeInfo hold info
+// RuntimeInfo hold info
 type RuntimeInfo struct {
 	GOVersion string
 	GOOS      string
@@ -49,31 +50,36 @@ type RuntimeInfo struct {
 	GOPATH    string
 	GOROOT    string
 	Compiler  string
-	PATH      string
+	PATH      string `split:":"`
 	SHELL     string
-	HOME      string
+	CurPath   string
 }
 
 func info() {
 	ri := RuntimeInfo{
-		getGOVersion(),
-		runtime.GOOS,
-		runtime.GOARCH,
-		runtime.NumCPU(),
-		os.Getenv("GOPATH"),
-		runtime.GOROOT(),
-		runtime.Compiler,
-		os.Getenv("PATH"),
-		os.Getenv("SHELL"),
-		getHOME(),
+		GOVersion: getGOVersion(),
+		GOOS:      runtime.GOOS,
+		GOARCH:    runtime.GOARCH,
+		NumCPU:    runtime.NumCPU(),
+		GOPATH:    build.Default.GOPATH,
+		GOROOT:    runtime.GOROOT(),
+		Compiler:  runtime.Compiler,
+		PATH:      os.Getenv("PATH"),
+		SHELL:     os.Getenv("SHELL"),
+		CurPath:   getCurPath(),
 	}
-
 	t := reflect.TypeOf(ri)
 	v := reflect.ValueOf(ri)
 	for i := 0; i < t.NumField(); i++ {
-		log.Info(fmt.Sprintf("%-9v : %v", t.Field(i).Name, v.Field(i).Interface()))
+		splitSeq, exists := t.Field(i).Tag.Lookup("split")
+		var val interface{}
+		if exists {
+			val = strings.Split(v.Field(i).Interface().(string), splitSeq)
+		} else {
+			val = v.Field(i).Interface()
+		}
+		log.Info(fmt.Sprintf("%-9v : %v", t.Field(i).Name, val))
 	}
-
 }
 
 func getGOVersion() string {
@@ -84,7 +90,7 @@ func getGOVersion() string {
 	return strings.Split(string(v), " ")[2]
 }
 
-func getHOME() string {
+func getCurPath() string {
 	d, err := os.Getwd()
 	if err != nil {
 		log.Erro(err)

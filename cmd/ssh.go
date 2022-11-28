@@ -63,9 +63,9 @@ func preRun(args []string) (string, *service.SSHConf) {
 	}
 	sshconf := service.NewSSHConf(
 		args[0],
-		viper.GetStringMapString("host_ssh")[args[0]],
-		viper.GetStringMapString("username")[args[0]],
-		viper.GetStringMapString("password")[args[0]],
+		viper.GetStringMapString("ssh_host")[args[0]],
+		viper.GetStringMapString("ssh_username")[args[0]],
+		viper.GetStringMapString("ssh_password")[args[0]],
 	)
 	return cmd, sshconf
 }
