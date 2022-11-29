@@ -11,6 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	tz string
+)
+
 var timeCmd = &cobra.Command{
 	Use:   "time",
 	Short: "time converter",
@@ -18,7 +22,6 @@ var timeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var cb carbon.Carbon
 		var value string
-		var tz string = carbon.PRC
 		if len(args) == 0 {
 			value = "now"
 		} else {
@@ -44,4 +47,5 @@ var timeCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(timeCmd)
+	timeCmd.PersistentFlags().StringVar(&tz, "tz", carbon.PRC, "set timezone")
 }

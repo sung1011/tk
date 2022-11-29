@@ -51,6 +51,7 @@ const CONFIG_FILE_DEFAULT = ".tk.yaml"
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	if cfgFile != "" {
+		// args
 		viper.SetConfigFile(cfgFile)
 	} else {
 		home, err := homedir.Dir()
