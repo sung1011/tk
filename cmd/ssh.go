@@ -2,14 +2,15 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
 	"os"
 
 	"github.com/sung1011/tk/service"
+	"github.com/sung1011/tk/utils"
 
 	log "github.com/sung1011/tk-log"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 func init() {
@@ -17,55 +18,43 @@ func init() {
 }
 
 var sshCmd = &cobra.Command{
-	Use:   "ssh [远程机器tag]",
+	Use:   "ssh [远程机器] [cmd]",
 	Short: "ssh连接远程机器或直接执行远程命令",
 	Long:  `ssh link`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) > 2 {
-			return errors.New("参数只要2个")
+			return errors.New("args num need 2")
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		runTerStd(args)
+		sshHandler(args)
 	},
 }
 
-func runTerStd(args []string) {
-	cmd, conf := preRun(args)
-	if err := service.RunTerminal(cmd, conf, os.Stdout, os.Stderr); err != nil {
-		log.Erro(err)
-	}
-}
-
-func preRun(args []string) (string, *service.SSHConf) {
+func sshHandler(args []string) {
 	var cmd string
 	if len(args) == 0 {
-		args = append(args, "board")
+		log.Erro("need args")
 	}
-	// alias := map[string]string{"d": "dev", "dev": "dev", "md": "mat-dev", "mat-dev": "mat-dev", "b": "board", "board": "board"}
-	// viper.Set("sshmap", alias)
-	// if v, ok := alias[args[0]]; !ok {
-	// 	log.Erro("参数错误:", v, "可选参数:", alias)
-	// }
-	// args[0] = alias[args[0]]
-	if len(args) == 1 {
-		// 无cmd 表达ssh登录
+	if len(args) == 1 { // no cmd
 		args = append(args, "")
-	} else if len(args) == 2 {
-		//快捷操作
+	} else if len(args) == 2 { // quick cmd
 		switch args[1] {
-		case "tail -f error":
-			cmd = ""
+		case "tail error":
+			cmd = "tail -f /logs/error.log"
 		}
-	} else {
-		log.Erro("参数个数最多2个")
 	}
-	sshconf := service.NewSSHConf(
-		args[0],
-		viper.GetStringMapString("ssh_host")[args[0]],
-		viper.GetStringMapString("ssh_username")[args[0]],
-		viper.GetStringMapString("ssh_password")[args[0]],
+	key := args[0]
+	conf := utils.GetConf("ssh", key).(map[string]interface{})
+	fmt.Println("", conf["host"])
+	sshConf := service.NewSSHConf(
+		key,
+		conf["host"].(string),
+		conf["username"].(string),
+		conf["password"].(string),
 	)
-	return cmd, sshconf
+	if err := service.RunTerminal(cmd, sshConf, os.Stdout, os.Stderr); err != nil {
+		log.Erro(err)
+	}
 }

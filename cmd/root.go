@@ -55,24 +55,36 @@ func initConfig() {
 	} else {
 		home, err := homedir.Dir()
 		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+			panic(err)
 		}
-		pathExists, err := utils.PathExists(fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
+		curPath, err := os.Getwd()
 		if err != nil {
 			panic(err)
 		}
-		if !pathExists {
-			curPath, err := os.Getwd()
+		// local
+		pathExists, err := utils.PathExists(fmt.Sprintf("%s/%s", curPath, CONFIG_FILE_DEFAULT))
+		if err != nil {
+			panic(err)
+		}
+		if pathExists {
+			viper.AddConfigPath(curPath)
+			viper.SetConfigName(".tk")
+		} else {
+			// home
+			pathExists, err = utils.PathExists(fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
 			if err != nil {
 				panic(err)
 			}
-			utils.CopyFile(fmt.Sprintf("%s/%s.default", curPath, CONFIG_FILE_DEFAULT), fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
+			if !pathExists {
+				if err != nil {
+					panic(err)
+				}
+				utils.CopyFile(fmt.Sprintf("%s/%s.default", curPath, CONFIG_FILE_DEFAULT), fmt.Sprintf("%s/%s", home, CONFIG_FILE_DEFAULT))
+			}
+			viper.AddConfigPath(home)
+			viper.SetConfigName(".tk")
 		}
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".tk")
 	}
-
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {

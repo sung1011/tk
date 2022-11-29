@@ -11,4 +11,3 @@ multi:
     test:
         - open http://www.google.com
         - open http://www.baidu.com
-    avs:

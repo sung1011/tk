@@ -4,7 +4,6 @@ Copyright © 2022 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"fmt"
 	"os/exec"
 	"strings"
 	"sync"
@@ -40,21 +39,17 @@ func init() {
 }
 
 func multiHandler(arg string) {
-	confMulti := viper.GetStringMapStringSlice("multi")
-	conf, exists := confMulti[arg]
-	if !exists {
-		log.Info(fmt.Sprintf("参数%s不存在", arg))
-		return
-	}
+	conf := utils.GetConf("multi", arg).([]interface{})
 	var wg sync.WaitGroup
 	for _, task := range conf {
+		t := task.(string)
 		wg.Add(1)
 		go func(task string) {
 			defer wg.Done()
 			sp := strings.Split(task, " ")
 			c := exec.Command(sp[0], sp[1:]...)
 			utils.RunCmd(c)
-		}(task)
+		}(t)
 	}
 	wg.Wait()
 }

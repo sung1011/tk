@@ -13,8 +13,8 @@ import (
 
 var timeCmd = &cobra.Command{
 	Use:   "time",
-	Short: "转化时间",
-	Long:  `转化时间`,
+	Short: "time converter",
+	Long:  `time converter`,
 	Run: func(cmd *cobra.Command, args []string) {
 		var cb carbon.Carbon
 		var value string
@@ -26,13 +26,10 @@ var timeCmd = &cobra.Command{
 		}
 		v, err := strconv.Atoi(value)
 		if err == nil {
-			// 时间戳
-			// v, _ := strconv.Atoi(value)
-			// fmt.Println("", value, v)
-			if len(value) == 10 {
+			if len(value) == 10 { // 时间戳
 				cb = cb.CreateFromTimestamp(int64(v), tz)
 			}
-			if len(value) == 13 {
+			if len(value) == 13 { // 时间戳 毫秒
 				cb = cb.CreateFromTimestampMilli(int64(v), tz)
 			}
 		} else {

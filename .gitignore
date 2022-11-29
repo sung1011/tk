@@ -3,3 +3,4 @@
 .DS_Store
 /vendor
 Gopkg.lock
+.tk.yaml
