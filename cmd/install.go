@@ -16,6 +16,12 @@ var installCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("install called")
+		// mkdir
+		// clone
+		// zsh
+		// alias
+		// brew tap,install,cask
+		// path
 	},
 }
 
