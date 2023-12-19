@@ -10,7 +10,7 @@ require (
 	github.com/spf13/viper v1.14.0
 	github.com/sung1011/tk-log v0.0.0-20180807095620-2a147d559a4a
 	github.com/tidwall/gjson v1.14.3
-	golang.org/x/crypto v0.2.0
+	golang.org/x/crypto v0.17.0
 )
 
 require (
@@ -30,9 +30,9 @@ require (
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
-	golang.org/x/sys v0.2.0 // indirect
-	golang.org/x/term v0.2.0 // indirect
-	golang.org/x/text v0.4.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
