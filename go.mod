@@ -6,6 +6,7 @@ require (
 	github.com/fatih/color v1.13.0
 	github.com/golang-module/carbon/v2 v2.2.2
 	github.com/mitchellh/go-homedir v1.1.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.14.0
 	github.com/sung1011/tk-log v0.0.0-20180807095620-2a147d559a4a
