@@ -34,6 +34,12 @@ var cronCmd = &cobra.Command{
 		log.Succ(t4.Format("2006-01-02 15:04:05"))
 		t5 := cron.Next(t4)
 		log.Succ(t5.Format("2006-01-02 15:04:05"))
+		t6 := cron.Next(t5)
+		log.Succ(t6.Format("2006-01-02 15:04:05"))
+		t7 := cron.Next(t6)
+		log.Succ(t7.Format("2006-01-02 15:04:05"))
+		t8 := cron.Next(t7)
+		log.Succ(t8.Format("2006-01-02 15:04:05"))
 	},
 }
 
