@@ -14,10 +14,23 @@ import (
 var cronCmd = &cobra.Command{
 	Use:   "cron",
 	Short: "cron parse",
-	Long:  `cron parse`,
+	Long:  `cron 秒 分 小时 日期 月份 星期几 年份`,
+
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
-			log.Erro("cron spec is required")
+			log.Erro(`格式: <cron 秒 分 小时 日期 月份 星期几 年份>
+
+　　（1）*：表示匹配该域的任意值。假如在Minutes域使用*, 即表示每分钟都会触发事件。
+　　（2）?：只能用在DayofMonth和DayofWeek两个域。它也匹配域的任意值，但实际不会。因为DayofMonth和DayofWeek会相互影响。例如想在每月的20日触发调度，不管20日到底是星期几，则只能使用如下写法： 13 13 15 20 * ?, 其中最后一位只能用？，而不能使用*，如果使用*表示不管星期几都会触发，实际上并不是这样。
+　　（3）-：表示范围。例如在Minutes域使用5-20，表示从5分到20分钟每分钟触发一次 
+　　（4）/：表示起始时间开始触发，然后每隔固定时间触发一次。例如在Minutes域使用5/20,则意味着5分钟触发一次，而25，45等分别触发一次. 
+　　（5）,：表示列出枚举值。例如：在Minutes域使用5,20，则意味着在5和20分每分钟触发一次。 
+
+	0 15 10 * * ?     每天上午10:15触发
+	0 0/30 9-17 * * ?   朝九晚五工作时间内每半小时
+	0 0 10,14,16 * * ?   每天上午10点，下午2点，4点 
+	0 0 12 ? * WED    表示每个星期三中午12点
+			`)
 		}
 		s := strings.Join(args, " ")
 		cron, err := ParseCron(s)
